@@ -231,6 +231,12 @@ objects:
           - name: config
             mountPath: /opt/amq/conf/rhsso-js-client.json
             subPath: rhsso-js-client.json
+          - name: config
+            mountPath: /opt/amq/conf/artemis.profile
+            subPath: artemis.profile
+          - name: config
+            mountPath: /opt/amq/conf/management.xml
+            subPath: management.xml
         terminationGracePeriodSeconds: 60
         volumes:
           - name: config
@@ -346,7 +352,6 @@ parameters:
   displayName: broker.xml
   name: BROKER_XML
   value: |-
-    <!-- Remove this tag to enable custom configuration -->
     <?xml version='1.0'?>
     <!--
     Licensed to the Apache Software Foundation (ASF) under one
@@ -498,17 +503,16 @@ parameters:
 
           <security-settings>
              <security-setting match="#">
-                <permission type="createNonDurableQueue" roles="${AMQ_ROLE}"/>
-                <permission type="deleteNonDurableQueue" roles="${AMQ_ROLE}"/>
-                <permission type="createDurableQueue" roles="${AMQ_ROLE}"/>
-                <permission type="deleteDurableQueue" roles="${AMQ_ROLE}"/>
-                <permission type="createAddress" roles="${AMQ_ROLE}"/>
-                <permission type="deleteAddress" roles="${AMQ_ROLE}"/>
-                <permission type="consume" roles="${AMQ_ROLE}"/>
-                <permission type="browse" roles="${AMQ_ROLE}"/>
-                <permission type="send" roles="${AMQ_ROLE}"/>
-                <!-- we need this otherwise ./artemis data imp wouldn't work -->
-                <permission type="manage" roles="${AMQ_ROLE}"/>
+                <permission type="createNonDurableQueue" roles="myapp_admin"/>
+                <permission type="deleteNonDurableQueue" roles="myapp_admin"/>
+                <permission type="createDurableQueue" roles="myapp_admin"/>
+                <permission type="deleteDurableQueue" roles="myapp_admin"/>
+                <permission type="createAddress" roles="myapp_admin"/>
+                <permission type="deleteAddress" roles="myapp_admin"/>
+                <permission type="consume" roles="myapp_sub, myapp_admin"/>
+                <permission type="browse" roles="myapp_admin"/>
+                <permission type="send" roles="myapp_pub, myapp_admin"/>
+                <permission type="manage" roles="myapp_admin"/>
              </security-setting>
           </security-settings>
 
