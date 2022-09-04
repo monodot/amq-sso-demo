@@ -73,7 +73,8 @@ oc process -f amq-broker-78-custom-modified.yaml \
 
 oc set env dc/broker-amq JAVA_ARGS="-Dhawtio.rolePrincipalClasses=org.apache.activemq.artemis.spi.core.security.jaas.RolePrincipal -Dhawtio.keycloakEnabled=true -Dhawtio.keycloakClientConfig=/home/jboss/broker/etc/rhsso-js-client.json -Dhawtio.authenticationEnabled=true -Dhawtio.realm=console"
 
-# Remove this so that the readiness probe succeeds (otherwise it will fail due to the redirect to Keycloak)
+# Remove the readiness probe so that the Service and Route are active
+# (Otherwise the Readiness probe fails due to the redirect to Keycloak - I think)
 oc set probe dc/broker-amq --remove --readiness
 ```
 
